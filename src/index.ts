@@ -1,4 +1,4 @@
-import { Probot, ProbotOctokit } from "probot";
+import { Probot } from "probot";
 import logger from "winston";
 
 import { getCodeReviewResult } from "./code_review_handler.js";
@@ -20,7 +20,7 @@ export default (app: Probot) => {
           let { files: changedFiles, commits } = data.data;
     
           if (!changedFiles?.length) {
-            logger.error("no changed, fail");
+            logger.error("no changed");
             return "no changed";
           }
     
