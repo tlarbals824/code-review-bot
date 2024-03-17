@@ -1,4 +1,4 @@
-import { Probot, ProbotOctokit } from "probot";
+import { Probot } from "probot";
 import logger from "winston";
 
 import { getCodeReviewResult } from "./code_review_handler.js";
