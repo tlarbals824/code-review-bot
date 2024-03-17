@@ -20,7 +20,7 @@ export default (app: Probot) => {
           let { files: changedFiles, commits } = data.data;
     
           if (!changedFiles?.length) {
-            logger.error("no changed, fail");
+            logger.error("no changed");
             return "no changed";
           }
     
