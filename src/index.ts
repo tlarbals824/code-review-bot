@@ -39,11 +39,12 @@ export default (app: Probot) => {
 
             const hashValue = hashString(patch)
 
-            if(validateAlreadyReview(repo.repo, hashValue))
+            if(await validateAlreadyReview(repo.repo, hashValue))
                 continue;
 
     
             const message = (await getCodeReviewResult(api_key, patch)).message;
+
     
             if (!!message) {
               await context.octokit.pulls.createReviewComment({
