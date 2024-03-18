@@ -11,10 +11,10 @@ export async function validateAlreadyReview(repo: string, hash_value: string){
     .eq('repo', repo)
     .eq('code_hash_value', hash_value)
 
-    logger.info(data)
-    logger.info(error)
+    logger.info('data'+data)
+    logger.info('error'+error)
 
-    if(!data){
+    if(!data || data.length <= 0){
         return false;
     }
     return true;
