@@ -1,12 +1,18 @@
 import { supabase } from "./database/supabase.js";
 
 
-export function validateAlreadyReview(repo: string, hash_value: string){
-    const data =  supabase
+import logger from "winston";
+
+export async function validateAlreadyReview(repo: string, hash_value: string){
+
+    const { data, error }  = await supabase
     .from('code_review')
     .select()
-    .eq('code_review.repo', repo)
-    .eq('code_review.code_hash_value', hash_value)
+    .eq('repo', repo)
+    .eq('code_hash_value', hash_value)
+
+    logger.info(data)
+    logger.info(error)
 
     if(!data){
         return false;
