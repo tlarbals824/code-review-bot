@@ -1,0 +1,42 @@
+name: deploy code review bot
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: build code review bot
+        run: |
+          npm run build
+
+      - name: docker build
+        run: docker build -t ${{secrets.DOCKER_USERNAME}}/code_review_bot
+
+      - name: docker login
+        uses: docker/login-action@v1
+        with:
+          username: ${{secrets.DOCKER_USERNAME}}
+          password: ${{secrets.DOCKER_PASSWORD}}
+
+      - name: docker push
+        run: docker push ${{secrets.DOCKER_USERNAME}}/code_review_bot
+
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ubuntu
+          key: ${{ secrets.KEY }}
+          script: |
+            docker pull ${{ secrets.DOCKER_USERNAME }}/code_review_bot
+            docker stop code_review_bot
+            docker rm -f code_review_bot
+            docker run --name code_review_bot -d -p 3000:3000 --env-file .env -v ./key:/usr/src/app/key  ${{ secrets.DOCKER_USERNAME }}/code_review_bot
+            docker image prune -f
