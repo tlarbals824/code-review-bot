@@ -21,7 +21,7 @@ jobs:
           npm run build
 
       - name: docker build
-        run: docker build -t ${{secrets.DOCKER_USERNAME}}/code_review_bot
+        run: docker build -t ${{secrets.DOCKER_USERNAME}}/code_review_bot .
 
       - name: docker login
         uses: docker/login-action@v1
