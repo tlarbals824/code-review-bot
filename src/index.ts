@@ -2,6 +2,9 @@ import { Probot } from "probot";
 import logger from "winston";
 
 import { getCodeReviewResult } from "./code_review_handler.js";
+import { hashString } from "./hash_handler.js";
+import {validateAlreadyReview } from "./code_review_validator.js"
+import { append } from "./code_review_appender.js";
 
 export default (app: Probot) => {
     app.on(
@@ -33,6 +36,12 @@ export default (app: Probot) => {
           for (let i = 0; i < changedFiles.length; i++) {
             const file = changedFiles[i];
             const patch = file.patch || "";
+
+            const hashValue = hashString(patch)
+
+            if(validateAlreadyReview(repo.repo, hashValue))
+                continue;
+
     
             const message = (await getCodeReviewResult(api_key, patch)).message;
     
@@ -46,7 +55,11 @@ export default (app: Probot) => {
                 body: message,
                 position: patch.split("\n").length - 1,
               });
+
+              append(repo.repo, hashValue);
             }
+
+
           }
           return "success";
         }
