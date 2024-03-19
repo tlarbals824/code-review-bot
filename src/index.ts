@@ -20,7 +20,7 @@ export default (app: Probot) => {
         base: context.payload.pull_request.base.sha,
       });
 
-      let { files: changedFiles, commits } = data.data;
+      let { files: changedFiles } = data.data;
 
       if (!changedFiles?.length) {
         logger.error("no changed");
