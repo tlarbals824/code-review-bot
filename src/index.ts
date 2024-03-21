@@ -40,19 +40,17 @@ export default (app: Probot) => {
         const file = changedFiles[i];
         const patch = file.patch || "";
 
-        request_code =
-          request_code + "\n file name: " + file.filename + "\n" + patch;
+        request_code = request_code + "\n file name: " + file.filename + "\n" + patch;
       }
 
       const hashValue = hashString(request_code);
 
-      if (!await validateAlreadyReviewSummary(repo.repo, hashValue))
+      if (await validateAlreadyReviewSummary(repo.repo, hashValue))
         return "fail";
 
       appendSummary(repo.repo, hashValue);
 
-      const message = (await getCodeReviewResult(api_key, request_code))
-        .message;
+      const message = (await getCodeReviewResult(api_key, request_code)).message;
 
       if (!!message) {
         await context.octokit.issues.createComment({
@@ -95,18 +93,10 @@ export default (app: Probot) => {
       const file = changedFiles[i];
       const patch = file.patch || "";
 
-      logger.info(file.filename);
-
-      logger.info(argument.includes(file.filename));
-
       if (argument.includes(file.filename)) {
         const hashValue = hashString(patch);
 
-        logger.info(hashValue)
-
         if (await validateAlreadyReview(repo.repo, hashValue)) continue;
-
-        logger.info(argument.includes(file.filename));
 
         const message = (await getCodeReviewResult(api_key, patch)).message;
 
