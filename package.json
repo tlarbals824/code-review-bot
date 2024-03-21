@@ -17,10 +17,12 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@octokit/webhooks": "^13.1.1",
     "@supabase/supabase-js": "^2.39.8",
     "axios": "^1.6.8",
     "node-oracledb": "^1.0.2",
     "probot": "^13.0.1",
+    "probot-commands": "^1.1.0",
     "winston": "^3.12.0"
   },
   "devDependencies": {
@@ -34,5 +36,5 @@
   "engines": {
     "node": ">= 18"
   },
-  "type": "module"
+  "type": "commonjs"
 }

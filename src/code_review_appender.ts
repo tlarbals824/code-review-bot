@@ -13,3 +13,15 @@ export async function append(repo: string, hash_value: string) {
   logger.info(data);
   logger.info(error);
 }
+
+export async function appendSummary(repo: string, hash_value: string) {
+    const { data, error} = await supabase
+      .from("code_review_summary")
+      .insert([
+          { repo: repo, code_hash_value: hash_value },
+      ])
+      .select();
+  
+    logger.info(data);
+    logger.info(error);
+  }

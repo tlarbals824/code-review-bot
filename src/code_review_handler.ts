@@ -1,6 +1,6 @@
 import axios from "axios";
 
-interface CodeReviewResponse{
+export interface CodeReviewResponse{
     message: string
 }
 
