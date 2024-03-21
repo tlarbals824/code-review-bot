@@ -13,7 +13,7 @@ const commands = require("probot-commands");
 
 export default (app: Probot) => {
   app.on(
-    ["pull_request.opened", "pull_request.synchronize"],
+    ["pull_request.opened"],
     async (context) => {
       const repo = context.repo();
       logger.info(repo);
